@@ -2,8 +2,13 @@
     <div>this is home</div>
 </template>
 
-<script lang="ts" setup>
-import { ref, reactive } from "vue";
+<script lang="ts" setup name="Home">
+import { ref, reactive, onMounted } from "vue";
+import useUserStore from "@/store/modules/user";
+let userStore = useUserStore();
+onMounted(() => {
+    userStore.getUserInfo();
+});
 </script>
 
 <style lang="css" scoped>

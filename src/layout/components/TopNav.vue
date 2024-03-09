@@ -46,13 +46,11 @@
                 circle
             ></el-button>
             <div class="avatar">
-                <img
-                    src="https://youimg1.c-ctrip.com/target/010341200061sysx2A203_D_10000_1200.jpg?proc=autoorient"
-                />
+                <img :src="userStore.userInfo.avatar" />
             </div>
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    admin
+                    {{ userStore.userInfo.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
@@ -75,14 +73,16 @@
 import { ref, reactive } from "vue";
 import useLayoutStore from "@/store/modules/layout";
 import { useRoute } from "vue-router";
+import useUserStore from "@/store/modules/user";
 import emitter from "@/utils/mitt";
+let userStore = useUserStore();
 const $route = useRoute();
 let layoutStore = useLayoutStore();
 let changeCollapse = () => {
     layoutStore.isCollapse = !layoutStore.isCollapse;
 };
 let sendRefresh = () => {
-    emitter.emit("refreshMain", 123);
+    emitter.emit("refreshMain");
 };
 let changeFullScreen = () => {
     if (document.fullscreenElement)

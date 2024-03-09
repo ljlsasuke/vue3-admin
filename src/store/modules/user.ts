@@ -1,12 +1,18 @@
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
-import { Login } from "@/api/user/index";
-import type { dataLogin, loginRes } from "@/api/user/type.ts";
+import { Login, getUserInfo } from "@/api/user/index";
+import type {
+    dataLogin,
+    loginRes,
+    userInfoResponseData,
+    userInfo as userInfoType,
+} from "@/api/user/type.ts";
 import { constantRoutes, asyncRoutes } from "@/router/routes";
 import type { RouteRecordRaw } from "vue-router";
 type UserState = {
     token: string;
     sliderMenuRoutes: RouteRecordRaw[];
+    userInfo: userInfoType;
 };
 
 const useUserStore = defineStore("User", {
@@ -15,6 +21,17 @@ const useUserStore = defineStore("User", {
             token: localStorage.getItem("TOKEN") || "",
             // sliderMenuRoutes: constantRoutes,
             sliderMenuRoutes: [...constantRoutes, ...asyncRoutes], //测试
+            userInfo: {
+                userId: 0,
+                avatar: "",
+                username: "",
+                password: "",
+                desc: "",
+                roles: [""],
+                buttons: [""],
+                routes: [""],
+                token: "",
+            },
         };
     },
     actions: {
@@ -32,6 +49,11 @@ const useUserStore = defineStore("User", {
                 });
                 return Promise.reject(res.data.message);
             }
+        },
+        async getUserInfo() {
+            let res: userInfoResponseData = await getUserInfo();
+            console.log(res, "res有什么");
+            this.userInfo = res.data;
         },
     },
     getters: {},

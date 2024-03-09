@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import useUserStore from "@/store/modules/user";
 //这里拦截的错误是请求失败的情况下
 const request = axios.create({
     baseURL: "/api",
@@ -7,6 +8,12 @@ const request = axios.create({
 });
 
 request.interceptors.request.use((config) => {
+    let userStore = useUserStore();
+    let { token } = userStore;
+    console.log("这次请求的token", token);
+    if (token) {
+        config.headers.token = token;
+    }
     return config;
 });
 
