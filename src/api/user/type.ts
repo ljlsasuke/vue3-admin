@@ -1,29 +1,34 @@
-export type dataLogin = {
+export interface dataLogin {
     username: string;
     password: string;
-};
+}
 
-export type loginRes = {
+//interface也可以使用泛型，但我感觉没有继承写法好看
+// 使用的时候这样就行 const test:Response<string> 或者 test<Response<string>>()
+// export interface Response<T> {
+//     code: number;
+//     message: string;
+//     ok: boolean;
+//     data: T;
+// }
+export interface Response {
     code: number;
-    data: {
-        message?: string;
-        token?: string;
-    };
-};
+    message: string;
+    ok: boolean;
+}
+
+export interface loginRes extends Response {
+    data: string;
+}
 
 export type userInfo = {
-    userId: number;
     avatar: string;
-    username: string;
-    password: string;
-    desc: string;
+    name: string;
     roles: string[];
     buttons: string[];
     routes: string[];
-    token: string;
 };
 
-export interface userInfoResponseData {
-    code: number;
-    data: userInfo | { message: string };
+export interface userInfoResponseData extends Response {
+    data: userInfo;
 }

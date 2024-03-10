@@ -16,29 +16,25 @@ const router = createRouter({
 //全局前置路由守卫
 console.log(setting, "全局setting");
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     nprogress.start();
     const { token, username } = userStore;
     if (token) {
         if (to.path === "/login") next({ path: "/" });
         else {
             //没有用户信息的话先成功获取用户信息再放行
-            if (!username) {
-                userStore
-                    .getUserInfo()
-                    .then((res) => {
-                        next();
-                    })
-                    .catch((err) => {
-                        //我认为验证token是否有效应该每一步都要确认，而不是只有没名字的时候才确认
-                        userStore.clearUserStore();
-                        next({
-                            path: "/login",
-                            query: { lastRedirect: to.path },
-                        });
+            if (username) next();
+            else {
+                try {
+                    await userStore.getUserInfo();
+                    next(); //切换路由时，获取到用户信息再放行，获取出错就登出
+                } catch (error) {
+                    await userStore.userLogout(); //好奇如果这里logout也失败了会咋样
+                    next({
+                        path: "/login",
+                        query: { lastRedirect: to.path },
                     });
-            } else {
-                next();
+                }
             }
         }
     } else {

@@ -3,7 +3,7 @@ import { ElMessage } from "element-plus";
 import useUserStore from "@/store/modules/user";
 //这里拦截的错误是请求失败的情况下
 const request = axios.create({
-    baseURL: "/api",
+    baseURL: import.meta.env.VITE_APP_BASE_API,
     timeout: 5000,
 });
 

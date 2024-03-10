@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
-import { Login, getUserInfo } from "@/api/user/index";
+import { Login, getUserInfo, Logout } from "@/api/user/index";
 import type {
-    dataLogin,
+    dataLogin as dataLoginType,
     loginRes,
     userInfoResponseData,
     userInfo as userInfoType,
@@ -22,41 +22,51 @@ const useUserStore = defineStore("User", {
             // sliderMenuRoutes: constantRoutes,
             sliderMenuRoutes: [...constantRoutes, ...asyncRoutes], //测试
             userInfo: {
-                userId: 0,
                 avatar: "",
-                username: "",
-                password: "",
-                desc: "",
+                name: "",
                 roles: [""],
                 buttons: [""],
                 routes: [""],
-                token: "",
             },
         };
     },
     actions: {
-        async userLogin(dataLogin: dataLogin) {
+        async userLogin(dataLogin: dataLoginType) {
             const res: loginRes = await Login(dataLogin);
             if (res.code === 200) {
-                //核心逻辑是如果code为200,那么string就一定不为undefined,但不知道直接定义咋定义
-                this.token = res.data.token as string;
-                localStorage.setItem("TOKEN", res.data.token as string);
+                this.token = res.data;
+                localStorage.setItem("TOKEN", res.data);
                 return "Login OK";
             } else {
                 ElMessage({
                     type: "error",
-                    message: res.data.message,
+                    message: res.data,
                 });
-                return Promise.reject(res.data.message);
+                return Promise.reject(res.data);
             }
         },
         async getUserInfo() {
             let res: userInfoResponseData = await getUserInfo();
             if (res.code === 200) {
-                this.userInfo = res.data as userInfoType;
+                this.userInfo = res.data;
                 return "GetUserInfo OK";
             } else {
-                const errorMessage = (res.data as { message: string }).message;
+                const errorMessage = res.message;
+                ElMessage({
+                    type: "error",
+                    message: errorMessage,
+                });
+                return Promise.reject(errorMessage);
+            }
+        },
+        async userLogout() {
+            let res: any = await Logout();
+            console.log(res, "退出登录");
+            if (res.code === 200) {
+                this.clearUserStore();
+                return "Logout OK";
+            } else {
+                const errorMessage = res.message;
                 ElMessage({
                     type: "error",
                     message: errorMessage,
@@ -67,22 +77,18 @@ const useUserStore = defineStore("User", {
         clearUserStore() {
             this.token = "";
             this.userInfo = {
-                userId: 0,
                 avatar: "",
-                username: "",
-                password: "",
-                desc: "",
+                name: "",
                 roles: [""],
                 buttons: [""],
                 routes: [""],
-                token: "",
             };
             localStorage.removeItem("TOKEN");
         },
     },
     getters: {
         avatar: (state) => state.userInfo.avatar,
-        username: (state) => state.userInfo.username,
+        username: (state) => state.userInfo.name,
     },
 });
 

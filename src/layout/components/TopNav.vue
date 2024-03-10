@@ -96,12 +96,15 @@ let changeFullScreen = () => {
     else document.documentElement.requestFullscreen();
 };
 let logout = () => {
-    // 1.向服务器发送退出登录请求
-    // 2.清除本地用户数据
-    // 3.跳转页面
-    userStore.clearUserStore(); //如果有服务器的话，那么肯定要考虑异步，但这里就不用考虑了
-    $router.push({ path: "/login", query: { lastRedirect: $route.path } });
-    console.log("退出登录");
+    userStore
+        .userLogout()
+        .then(() => {
+            return $router.push({
+                path: "/login",
+                query: { lastRedirect: $route.path },
+            });
+        })
+        .catch((err: Error) => console.error(err));
 };
 </script>
 
