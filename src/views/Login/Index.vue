@@ -46,13 +46,13 @@
 <script lang="ts" setup name="Login">
 import { User, Key } from "@element-plus/icons-vue";
 import { ref, reactive, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import useUserStore from "@/store/modules/user";
 import { ElMessage } from "element-plus";
 import { getHelloMessage } from "@/utils/time";
 import useCheckForm from "./hooks/useCheckForm";
 const userStore = useUserStore();
-
+let $route = useRoute();
 let $router = useRouter();
 const loginForm = ref();
 const formData = reactive({
@@ -71,7 +71,8 @@ const login = () => {
             return userStore.userLogin(formData);
         })
         .then((res: string) => {
-            $router.push("/");
+            let lastRedirect = $route.query.lastRedirect as string; //logout前的path
+            $router.push({ path: lastRedirect || "/" });
             ElMessage({
                 type: "success",
                 message: "登录成功," + getHelloMessage(),

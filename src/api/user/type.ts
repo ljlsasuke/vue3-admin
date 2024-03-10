@@ -25,5 +25,5 @@ export type userInfo = {
 
 export interface userInfoResponseData {
     code: number;
-    data: userInfo;
+    data: userInfo | { message: string };
 }

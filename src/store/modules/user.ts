@@ -41,7 +41,7 @@ const useUserStore = defineStore("User", {
                 //核心逻辑是如果code为200,那么string就一定不为undefined,但不知道直接定义咋定义
                 this.token = res.data.token as string;
                 localStorage.setItem("TOKEN", res.data.token as string);
-                return "OK";
+                return "Login OK";
             } else {
                 ElMessage({
                     type: "error",
@@ -52,11 +52,38 @@ const useUserStore = defineStore("User", {
         },
         async getUserInfo() {
             let res: userInfoResponseData = await getUserInfo();
-
-            this.userInfo = res.data;
+            if (res.code === 200) {
+                this.userInfo = res.data as userInfoType;
+                return "GetUserInfo OK";
+            } else {
+                const errorMessage = (res.data as { message: string }).message;
+                ElMessage({
+                    type: "error",
+                    message: errorMessage,
+                });
+                return Promise.reject(errorMessage);
+            }
+        },
+        clearUserStore() {
+            this.token = "";
+            this.userInfo = {
+                userId: 0,
+                avatar: "",
+                username: "",
+                password: "",
+                desc: "",
+                roles: [""],
+                buttons: [""],
+                routes: [""],
+                token: "",
+            };
+            localStorage.removeItem("TOKEN");
         },
     },
-    getters: {},
+    getters: {
+        avatar: (state) => state.userInfo.avatar,
+        username: (state) => state.userInfo.username,
+    },
 });
 
 export default useUserStore;

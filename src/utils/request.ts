@@ -10,7 +10,6 @@ const request = axios.create({
 request.interceptors.request.use((config) => {
     let userStore = useUserStore();
     let { token } = userStore;
-    console.log("这次请求的token", token);
     if (token) {
         config.headers.token = token;
     }

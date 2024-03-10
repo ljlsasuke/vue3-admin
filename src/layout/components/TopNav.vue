@@ -46,11 +46,11 @@
                 circle
             ></el-button>
             <div class="avatar">
-                <img :src="userStore.userInfo.avatar" />
+                <img :src="userStore.avatar" />
             </div>
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    {{ userStore.userInfo.username }}
+                    {{ userStore.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
@@ -61,7 +61,9 @@
                         <el-dropdown-item>Action 2</el-dropdown-item>
                         <el-dropdown-item>Action 3</el-dropdown-item>
                         <el-dropdown-item disabled>Action 4</el-dropdown-item>
-                        <el-dropdown-item divided>Action 5</el-dropdown-item>
+                        <el-dropdown-item divided @click="logout">
+                            Sign Out
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -72,16 +74,19 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import useLayoutStore from "@/store/modules/layout";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/modules/user";
 import emitter from "@/utils/mitt";
 let userStore = useUserStore();
 const $route = useRoute();
+const $router = useRouter();
 let layoutStore = useLayoutStore();
 let changeCollapse = () => {
+    //更改折叠版状态
     layoutStore.isCollapse = !layoutStore.isCollapse;
 };
 let sendRefresh = () => {
+    //发送更新Main组件指令
     emitter.emit("refreshMain");
 };
 let changeFullScreen = () => {
@@ -89,6 +94,14 @@ let changeFullScreen = () => {
         //如果没有全屏就返回null mdn:https://developer.mozilla.org/zh-CN/docs/Web/API/Fullscreen_API
         document.exitFullscreen();
     else document.documentElement.requestFullscreen();
+};
+let logout = () => {
+    // 1.向服务器发送退出登录请求
+    // 2.清除本地用户数据
+    // 3.跳转页面
+    userStore.clearUserStore(); //如果有服务器的话，那么肯定要考虑异步，但这里就不用考虑了
+    $router.push({ path: "/login", query: { lastRedirect: $route.path } });
+    console.log("退出登录");
 };
 </script>
 

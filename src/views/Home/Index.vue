@@ -3,12 +3,9 @@
 </template>
 
 <script lang="ts" setup name="Home">
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive } from "vue";
 import useUserStore from "@/store/modules/user";
 let userStore = useUserStore();
-onMounted(() => {
-    userStore.getUserInfo();
-});
 </script>
 
 <style lang="css" scoped>

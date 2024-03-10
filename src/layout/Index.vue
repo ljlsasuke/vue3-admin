@@ -4,7 +4,7 @@
         <div :class="{ slider: true, isCollapse: layoutStore.isCollapse }">
             <div class="logo">
                 <img src="/src/assets/images/logo.png" />
-                <p v-show="!layoutStore.isCollapse">Vue3+Vite后台管理</p>
+                <p v-show="!layoutStore.isCollapse">{{ setting.AdminName }}</p>
             </div>
             <el-scrollbar class="scrollbar">
                 <el-menu
@@ -40,6 +40,7 @@ import SliderMenu from "./components/SliderMenu.vue";
 import Main from "./components/Main.vue";
 import useUserStore from "@/store/modules/user";
 import useLayoutStore from "@/store/modules/layout";
+import setting from "@/globalSetting.json";
 
 let layoutStore = useLayoutStore();
 const userStore = useUserStore();
