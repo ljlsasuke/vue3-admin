@@ -52,7 +52,7 @@ const useUserStore = defineStore("User", {
         },
         async getUserInfo() {
             let res: userInfoResponseData = await getUserInfo();
-            console.log(res, "res有什么");
+
             this.userInfo = res.data;
         },
     },
