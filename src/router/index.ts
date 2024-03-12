@@ -14,7 +14,6 @@ const router = createRouter({
     routes: [...constantRoutes, ...asyncRoutes], //测试
 });
 //全局前置路由守卫
-console.log(setting, "全局setting");
 
 router.beforeEach(async (to, from, next) => {
     nprogress.start();
@@ -29,7 +28,7 @@ router.beforeEach(async (to, from, next) => {
                     await userStore.getUserInfo();
                     next(); //切换路由时，获取到用户信息再放行，获取出错就登出
                 } catch (error) {
-                    await userStore.userLogout(); //好奇如果这里logout也失败了会咋样
+                    await userStore.userLogout(); //这里应该解决不了logout出错的情况
                     next({
                         path: "/login",
                         query: { lastRedirect: to.path },

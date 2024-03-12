@@ -14,6 +14,7 @@
                     style="border: none"
                     :default-active="$route.path"
                     :collapse="layoutStore.isCollapse"
+                    unique-opened
                 >
                     <SliderMenu
                         :routes="userStore.sliderMenuRoutes"
