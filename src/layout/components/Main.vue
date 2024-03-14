@@ -1,7 +1,8 @@
 <template>
     <router-view v-slot="{ Component }">
         <transition name="fade">
-            <component :is="Component" :key="refreshKey" />
+            <!-- 虽然Vue3支持多跟组件，但是transition包裹的组件要设置为单根，否则有警告 -->
+            <component :is="Component" :key="refreshKey"></component>
         </transition>
     </router-view>
 </template>
@@ -12,7 +13,7 @@ import emitter from "@/utils/mitt";
 //最好的组件刷新方法就是给一个key,然后去变化key,下面贴两个链接
 //https://www.jianshu.com/p/638253a6de20
 //https://blog.csdn.net/qq_39347364/article/details/116460151
-let refreshKey = ref(0);
+let refreshKey = ref(1);
 onMounted(() => {
     emitter.on("refreshMain", (message) => {
         refreshKey.value += 1;

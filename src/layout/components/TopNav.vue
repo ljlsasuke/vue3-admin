@@ -72,7 +72,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
 import useLayoutStore from "@/store/modules/layout";
 import { useRoute, useRouter } from "vue-router";
 import useUserStore from "@/store/modules/user";
