@@ -55,24 +55,36 @@
         @close="resetForm(formRef)"
     >
         <el-form
-            style="width: 80%"
+            style="width: 100%"
             label-position="left"
             ref="formRef"
             :model="nowTradeMark"
             :rules="rules"
         >
-            <el-form-item label="品牌名称" label-width="80px" prop="tmName">
+            <el-form-item
+                label="品牌名称"
+                label-width="80px"
+                prop="tmName"
+                style="width: 80%"
+            >
                 <el-input
                     placeholder="请输入品牌名称"
                     v-model="nowTradeMark.tmName"
                 />
             </el-form-item>
-            <el-form-item label="品牌LOGO" label-width="80px" prop="logoUrl">
+            <el-form-item
+                label="品牌LOGO"
+                label-width="80px"
+                prop="logoUrl"
+                v-loading="uploadImageLoading"
+                element-loading-text="图片上传中"
+            >
                 <el-upload
                     class="avatar-uploader"
                     action="api/admin/product/fileUpload"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
+                    :on-error="handleAvatarFail"
                     :before-upload="beforeAvatarUpload"
                 >
                     <img
@@ -94,103 +106,19 @@
 </template>
 
 <script lang="ts" setup name="Brand">
-import { ref, onMounted, watch, reactive } from "vue";
-import { ElMessage, valueEquals } from "element-plus";
-import type { FormInstance, FormRules } from "element-plus";
-import type { UploadProps } from "element-plus";
-import {
-    getTraderMark,
-    editTraderMark,
-    deleteTradeMark,
-} from "@/api/product/brand/index";
+import { ref, onMounted, watch } from "vue";
+import { ElMessage } from "element-plus";
+import type { FormInstance } from "element-plus";
+import usePagination from "./hooks/usePagination";
+import useDialog from "./hooks/useDialog";
+import useForm from "./hooks/useForm";
+import { getTraderMark } from "@/api/product/brand/index";
 import type { TradeMark } from "@/api/product/brand/type.ts";
-import { requiredNumber } from "element-plus/es/components/table-v2/src/common";
-import { el } from "element-plus/es/locale";
+import type { Ref } from "vue";
 
-let pageNo = ref<number>(1);
-let pageSize = ref<number>(5);
-let total = ref<number>(0);
+let { pageNo, pageSize, total } = usePagination();
 let TMList = ref<TradeMark[]>([]); //当前页的品牌列表
-let dialogTableVisible = ref<boolean>(false);
-let dialogTitle: string = "";
-let nowTradeMark = reactive<TradeMark>({
-    id: undefined,
-    tmName: "",
-    logoUrl: "",
-});
-const formRef = ref<FormInstance>();
-let validatorTMname = (rule: any, value: string, callback: any) => {
-    if (value.trim().length >= 2) callback();
-    else callback("品牌名称至少两个字");
-};
-let validatorLogoUrl = (rule: any, value: any, callback: any) => {
-    if (value) callback();
-    else callback("请上传图片");
-};
-let rules: FormRules = {
-    tmName: [{ required: true, trigger: "blur", validator: validatorTMname }],
-    logoUrl: [
-        //这个logoUrl不是表单元素，无法通过trigger触发校验
-        { required: true, trigger: "change", validator: validatorLogoUrl },
-    ],
-};
-
-// row里面的数据并不符合TradeMark，但是这里不会报错
-let trigEdit = (row: TradeMark) => {
-    dialogTitle = "修改品牌";
-    dialogTableVisible.value = true;
-    nowTradeMark.id = row.id;
-    nowTradeMark.tmName = row.tmName;
-    nowTradeMark.logoUrl = row.logoUrl;
-};
-let trigAdd = () => {
-    dialogTitle = "增加品牌";
-    dialogTableVisible.value = true;
-};
-
-let resetForm = (formEl: FormInstance | undefined) => {
-    nowTradeMark.id = undefined; //因为这个id并没有在表单中使用，所以需要手动清空
-    if (!formEl) return;
-    formEl.resetFields(); //表单的值和校验结果都会清除掉
-};
-
-let cancel = () => {
-    dialogTableVisible.value = false;
-};
-let editConfirm = async () => {
-    await formRef.value?.validate();
-    let res = await editTraderMark(nowTradeMark);
-    if (res.code === 200) {
-        ElMessage({
-            type: "success",
-            message: res.message,
-        });
-        updateTML();
-    } else {
-        ElMessage({
-            type: "error",
-            message: res.message,
-        });
-    }
-
-    dialogTableVisible.value = false;
-};
-
-let deleteConfirm = async (id: number) => {
-    let res = await deleteTradeMark(id);
-    if (res.code === 200) {
-        ElMessage({
-            type: "success",
-            message: "删除成功",
-        });
-        updateTML();
-    } else {
-        ElMessage({
-            type: "error",
-            message: "删除失败",
-        });
-    }
-};
+const formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
 const updateTML = async () => {
     let res = await getTraderMark(pageNo.value, pageSize.value);
     if (res.code === 200) {
@@ -204,34 +132,25 @@ const updateTML = async () => {
         });
     }
 };
+let {
+    nowTradeMark,
+    uploadImageLoading,
+    resetForm,
+    beforeAvatarUpload,
+    handleAvatarFail,
+    handleAvatarSuccess,
+    rules,
+} = useForm(formRef);
+let {
+    dialogTableVisible,
+    trigEdit,
+    trigAdd,
+    cancel,
+    dialogTitle,
+    deleteConfirm,
+    editConfirm,
+} = useDialog(formRef, nowTradeMark, updateTML);
 
-const handleAvatarSuccess: UploadProps["onSuccess"] = (
-    response,
-    uploadFile,
-) => {
-    nowTradeMark.logoUrl = URL.createObjectURL(uploadFile.raw!);
-    formRef.value?.clearValidate("logoUrl"); //上传图片成功之后清楚图片校验提示
-};
-
-const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile: File) => {
-    console.log(rawFile, "上传的文件");
-
-    if (!["image/png", "image/jpeg"].includes(rawFile.type)) {
-        ElMessage({
-            type: "error",
-            message: "文件格式非法!",
-        });
-        return false;
-    }
-    if (rawFile.size / 1024 / 1024 > 2) {
-        ElMessage({
-            type: "error",
-            message: "文件不能超过2mb!",
-        });
-        return false;
-    }
-    return true;
-};
 onMounted(() => {
     updateTML();
 });

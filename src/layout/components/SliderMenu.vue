@@ -46,7 +46,6 @@
 </template>
 
 <script lang="ts" setup name="SliderMenu">
-import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 defineProps(["routes"]);
 let $router = useRouter();
