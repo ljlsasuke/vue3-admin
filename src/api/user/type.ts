@@ -1,3 +1,4 @@
+import { baseResponse } from "@/api/typeIndex";
 export interface dataLogin {
     username: string;
     password: string;
@@ -11,13 +12,8 @@ export interface dataLogin {
 //     ok: boolean;
 //     data: T;
 // }
-export interface Response {
-    code: number;
-    message: string;
-    ok: boolean;
-}
 
-export interface loginRes extends Response {
+export interface loginRes extends baseResponse {
     data: string;
 }
 
@@ -29,6 +25,6 @@ export type userInfo = {
     routes: string[];
 };
 
-export interface userInfoResponseData extends Response {
+export interface userInfoResponseData extends baseResponse {
     data: userInfo;
 }

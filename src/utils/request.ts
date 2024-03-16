@@ -23,7 +23,14 @@ request.interceptors.response.use(
     (error) => {
         //处理网络错误
         let msg = "";
-        const status = error.response.status;
+
+        const status = error.response?.status;
+        if (!status)
+            return ElMessage({
+                showClose: true,
+                type: "error",
+                message: error.message,
+            });
         switch (status) {
             case 401:
                 msg = "token过期";
