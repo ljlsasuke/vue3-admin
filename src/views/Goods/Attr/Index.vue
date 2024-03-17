@@ -6,7 +6,7 @@
                 <el-button
                     type="primary"
                     icon="Plus"
-                    :disabled="attrStore.c3Id === -1"
+                    :disabled="!isCanToEditOrAddAttr"
                     @click="trigAddAttr"
                 >
                     添加平台属性
@@ -42,7 +42,7 @@
                             type="primary"
                             icon="Edit"
                             size="small"
-                            @click="trigEditAttr"
+                            @click="trigEditAttr(row)"
                         ></el-button>
                         <el-popconfirm
                             title="确认删除？"
@@ -86,13 +86,37 @@
                     label="序号"
                 ></el-table-column>
                 <el-table-column label="属性值">
-                    <template #="{ row }">
-                        <el-input v-model="row.valueName"></el-input>
+                    <template #="{ row, $index }">
+                        <el-input
+                            v-model="row.valueName"
+                            v-show="editModeControl[$index]"
+                            @blur="toShowValueName(row, $index)"
+                            :ref="(vc: any) => (inputArr[$index] = vc)"
+                        ></el-input>
+                        <div
+                            v-show="!editModeControl[$index]"
+                            @click="toEditValueName($index)"
+                        >
+                            {{ row.valueName }}
+                        </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作"></el-table-column>
+                <el-table-column label="操作">
+                    <template #="{ row, $index }">
+                        <el-button
+                            type="danger"
+                            icon="Delete"
+                            size="small"
+                            @click="deleteAttrValue($index)"
+                        ></el-button>
+                    </template>
+                </el-table-column>
             </el-table>
-            <el-button type="primary" @click="saveNowAttrInfo(attrStore.c3Id)">
+            <el-button
+                type="primary"
+                @click="saveNowAttrInfo(attrStore.c3Id)"
+                :disabled="!isCanSave"
+            >
                 保存
             </el-button>
             <el-button type="primary" @click="cancel">取消</el-button>
@@ -101,25 +125,32 @@
 </template>
 
 <script lang="ts" setup name="Attr">
-import { ref, reactive, watch } from "vue";
+import { ref, watch } from "vue";
 import uesAttrStore from "@/store/modules/attr";
 import useSaveAttrInfo from "./hooks/useSaveAttrInfo";
-import { getAttrInfoList } from "@/api/product/attr/index";
+import { getAttrInfoList, deleteAttr } from "@/api/product/attr/index";
 import { AttrInfo } from "@/api/product/attr/type";
+import { ElMessage } from "element-plus";
 const attrStore = uesAttrStore();
 const AttrInfoListNow = ref<AttrInfo[]>([]);
+let isCanToEditOrAddAttr = ref<boolean>(false);
 let updateAttrInfoListNow = async () => {
-    if (attrStore.c3Id === -1) {
-        return;
-    }
+    //重新发起请求时不知会是否会请求成功，所以先禁用添加属性按钮，并清空listNow
+    isCanToEditOrAddAttr.value = false;
+    AttrInfoListNow.value = [];
     let { c1Id, c2Id, c3Id } = attrStore;
 
     let res = await getAttrInfoList(c1Id, c2Id, c3Id);
     if (res.code === 200) {
         AttrInfoListNow.value = res.data;
-        console.log(res.data, "data");
+        isCanToEditOrAddAttr.value = true;
+        ElMessage({
+            type: "success",
+            message: "获取属性列表成功！",
+        });
     }
 };
+const inputArr: any[] = [];
 let {
     nowAttrInfo,
     addAttrValue,
@@ -128,11 +159,38 @@ let {
     trigAddAttr,
     trigEditAttr,
     cancel,
-} = useSaveAttrInfo(updateAttrInfoListNow);
+    toShowValueName,
+    editModeControl,
+    toEditValueName,
+    isCanSave,
+    deleteAttrValue,
+} = useSaveAttrInfo(updateAttrInfoListNow, inputArr);
 
-const deleteConfirm = (id: number) => {};
+const deleteConfirm = async (id: number) => {
+    let res = await deleteAttr(id);
+    if (res.code === 200) {
+        ElMessage({
+            type: "success",
+            message: "删除成功",
+        });
+        updateAttrInfoListNow();
+    } else {
+        ElMessage({
+            type: "error",
+            message: "删除失败！",
+        });
+    }
+};
 
-watch(() => attrStore.c3Id, updateAttrInfoListNow);
+watch(
+    () => attrStore.c3Id,
+    () => {
+        if (attrStore.c3Id === -1) {
+            return;
+        }
+        updateAttrInfoListNow();
+    },
+);
 </script>
 
 <style lang="scss" scoped>
