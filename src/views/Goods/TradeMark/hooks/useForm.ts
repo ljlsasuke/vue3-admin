@@ -3,7 +3,7 @@ import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance, FormRules } from "element-plus";
 import type { UploadProps } from "element-plus";
-import type { TradeMark } from "@/api/product/brand/type";
+import type { TradeMark } from "@/api/product/trademark/type";
 
 export default function (formRef: Ref<FormInstance | undefined>) {
     let nowTradeMark = reactive<TradeMark>({

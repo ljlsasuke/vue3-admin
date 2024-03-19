@@ -44,16 +44,16 @@ export const asyncRoutes: RouteRecordRaw[] = [
         path: "/goods",
         name: "goods",
         component: layout,
-        redirect: "/goods/brand",
+        redirect: "/goods/trademark",
         meta: {
             title: "商品管理",
             elIcon: "GoodsFilled",
         },
         children: [
             {
-                path: "/goods/brand",
-                name: "brand",
-                component: () => import("@/views/Goods/Brand/Index.vue"),
+                path: "/goods/trademark",
+                name: "trademark",
+                component: () => import("@/views/Goods/TradeMark/Index.vue"),
                 meta: {
                     title: "品牌管理",
                     elIcon: "UserFilled",

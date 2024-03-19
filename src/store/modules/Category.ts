@@ -13,7 +13,7 @@ type stateT = {
     c2Id: number;
     c3Id: number;
 };
-const uesAttrStore = defineStore("Attr", {
+const uesCategoryStore = defineStore("Category", {
     state: (): stateT => ({
         c1s: [],
         c2s: [],
@@ -38,4 +38,4 @@ const uesAttrStore = defineStore("Attr", {
     },
 });
 
-export default uesAttrStore;
+export default uesCategoryStore;

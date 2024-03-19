@@ -110,7 +110,7 @@
     </div>
 </template>
 
-<script lang="ts" setup name="Brand">
+<script lang="ts" setup name="TradeMark">
 import { ref, onMounted, watch } from "vue";
 import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
@@ -118,12 +118,9 @@ import type { FormInstance } from "element-plus";
 import usePagination from "./hooks/usePagination";
 import useDialog from "./hooks/useDialog";
 import useForm from "./hooks/useForm";
-import { getTraderMark } from "@/api/product/brand/index";
-import type { TradeMark } from "@/api/product/brand/type.ts";
-
-let { pageNo, pageSize, total } = usePagination();
+import { getTraderMark } from "@/api/product/trademark/index";
+import type { TradeMark } from "@/api/product/trademark/type.ts";
 let TMList = ref<TradeMark[]>([]); //当前页的品牌列表
-const formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
 const updateTML = async () => {
     let res = await getTraderMark(pageNo.value, pageSize.value);
     if (res.code === 200) {
@@ -137,6 +134,10 @@ const updateTML = async () => {
         });
     }
 };
+let { pageNo, pageSize, total } = usePagination(updateTML);
+
+const formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
+
 let {
     nowTradeMark,
     uploadImageLoading,
@@ -157,9 +158,6 @@ let {
 } = useDialog(formRef, nowTradeMark, updateTML);
 
 onMounted(() => {
-    updateTML();
-});
-watch([pageNo, pageSize], (newVal) => {
     updateTML();
 });
 </script>
@@ -220,3 +218,4 @@ watch([pageNo, pageSize], (newVal) => {
     text-align: center;
 }
 </style>
+@/api/product/trademark/index@/api/product/trademark/type

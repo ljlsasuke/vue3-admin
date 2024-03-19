@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ThreeCategory :isTable="isTable"></ThreeCategory>
+        <ThreeCategory :isDisabled="!isTable"></ThreeCategory>
         <el-card class="card" v-show="isTable">
             <template #header>
                 <el-button
@@ -114,7 +114,7 @@
             </el-table>
             <el-button
                 type="primary"
-                @click="saveNowAttrInfo(attrStore.c3Id)"
+                @click="saveNowAttrInfo(CategoryStore.c3Id)"
                 :disabled="!isCanSave"
             >
                 保存
@@ -126,19 +126,19 @@
 
 <script lang="ts" setup name="Attr">
 import { ref, watch } from "vue";
-import uesAttrStore from "@/store/modules/attr";
+import uesCategoryStore from "@/store/modules/Category";
 import useSaveAttrInfo from "./hooks/useSaveAttrInfo";
 import { getAttrInfoList, deleteAttr } from "@/api/product/attr/index";
 import { AttrInfo } from "@/api/product/attr/type";
 import { ElMessage } from "element-plus";
-const attrStore = uesAttrStore();
+const CategoryStore = uesCategoryStore();
 const AttrInfoListNow = ref<AttrInfo[]>([]);
 let isCanToEditOrAddAttr = ref<boolean>(false);
 let updateAttrInfoListNow = async () => {
     //重新发起请求时不知会是否会请求成功，所以先禁用添加属性按钮，并清空listNow
     isCanToEditOrAddAttr.value = false;
     AttrInfoListNow.value = [];
-    let { c1Id, c2Id, c3Id } = attrStore;
+    let { c1Id, c2Id, c3Id } = CategoryStore;
 
     let res = await getAttrInfoList(c1Id, c2Id, c3Id);
     if (res.code === 200) {
@@ -183,9 +183,9 @@ const deleteConfirm = async (id: number) => {
 };
 
 watch(
-    () => attrStore.c3Id,
+    () => CategoryStore.c3Id,
     () => {
-        if (attrStore.c3Id === -1) {
+        if (CategoryStore.c3Id === -1) {
             return;
         }
         updateAttrInfoListNow();
@@ -199,4 +199,4 @@ watch(
     padding: 15px;
 }
 </style>
-./Hooks/useAddAttrInfo./hooks/useAddAttrInfo./hooks/useSaveAttrInfo
+./Hooks/useAddAttrInfo./hooks/useAddAttrInfo./hooks/useSaveAttrInfo@/store/modules/Category

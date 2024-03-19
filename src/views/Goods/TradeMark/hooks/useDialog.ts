@@ -2,8 +2,8 @@ import { ref } from "vue";
 import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
-import { editTraderMark, deleteTradeMark } from "@/api/product/brand/index";
-import type { TradeMark } from "@/api/product/brand/type.ts";
+import { editTraderMark, deleteTradeMark } from "@/api/product/trademark/index";
+import type { TradeMark } from "@/api/product/trademark/type";
 
 export default function (
     formRef: Ref<FormInstance | undefined>,

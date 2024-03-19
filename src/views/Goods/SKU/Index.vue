@@ -2,11 +2,11 @@
     <div>this is sku</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="SKU"> 
 import { ref, reactive } from "vue";
 </script>
 
-<style lang="" scoped>
+<style lang="scss" scoped>
 /********布局******/
 /********定位/浮动******/
 /********大小******/
