@@ -4,7 +4,7 @@
 
         <el-card class="card" v-show="scene === 'ShowSPUList'">
             <template #header>
-                <el-button type="primary" icon="Plus" @click="trigToEditSPU">
+                <el-button type="primary" icon="Plus" @click="trigToAddSPU">
                     添加SPU
                 </el-button>
             </template>
@@ -34,6 +34,7 @@
                             type="warning"
                             icon="Edit"
                             title="编辑SPU"
+                            @click="trigToEditSPU(row)"
                             size="small"
                         ></el-button>
                         <el-button
@@ -61,15 +62,18 @@
                 style="margin-top: 18px"
             />
         </el-card>
-        <el-card class="card" v-show="scene === 'EditSPU'">
-            <EditSpu></EditSpu>
+        <el-card class="card" v-show="scene === 'EditORAddSPU'">
+            <EditORAddSPU
+                @trigToShowSPUList="trigToShowSPUList"
+                ref="EditORAddSPURef"
+            ></EditORAddSPU>
         </el-card>
     </div>
 </template>
 
 <script lang="ts" setup name="SPU">
 import { ref, reactive, watch } from "vue";
-import EditSpu from "./components/EditSPU.vue";
+import EditORAddSPU from "./components/EditORAddSPU.vue";
 import uesCategoryStore from "@/store/modules/Category";
 import usePagination from "./hooks/usePagination";
 import { ElMessage } from "element-plus";
@@ -77,6 +81,7 @@ import { getSPUList } from "@/api/product/spu/index";
 import { SPU } from "@/api/product/spu/type";
 const CategoryStore = uesCategoryStore();
 let SPUListNow = ref<SPU[]>([]);
+let EditORAddSPURef = ref();
 let updateSPUListNow = async () => {
     const { code, data } = await getSPUList(
         pageNo.value,
@@ -91,11 +96,16 @@ let updateSPUListNow = async () => {
 let { pageNo, pageSize, total } = usePagination(updateSPUListNow);
 
 // 1. SPUlist 添加2.修改SPY  3.添加SKU
-type sceneT = "ShowSPUList" | "EditSPU";
+type sceneT = "ShowSPUList" | "EditORAddSPU";
 let scene = ref<sceneT>("ShowSPUList");
 
-const trigToEditSPU = () => {
-    scene.value = "EditSPU";
+const trigToAddSPU = () => {
+    scene.value = "EditORAddSPU";
+};
+
+const trigToEditSPU = async (row: SPU) => {
+    scene.value = "EditORAddSPU";
+    await EditORAddSPURef.value.initSPUInfo(row);
 };
 
 const trigToShowSPUList = () => {
