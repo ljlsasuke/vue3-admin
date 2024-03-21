@@ -90,6 +90,7 @@
                         <el-input
                             v-model="row.valueName"
                             v-show="editModeControl[$index]"
+                            @keyup.enter="inputArr[$index].blur()"
                             @blur="toShowValueName(row, $index)"
                             :ref="(vc: any) => (inputArr[$index] = vc)"
                         ></el-input>

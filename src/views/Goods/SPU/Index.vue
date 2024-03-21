@@ -4,7 +4,11 @@
 
         <el-card class="card" v-show="scene === 'ShowSPUList'">
             <template #header>
-                <el-button type="primary" icon="Plus" @click="trigToAddSPU">
+                <el-button
+                    type="primary"
+                    icon="Plus"
+                    @click="trigToAddSPU(CategoryStore.c3Id)"
+                >
                     添加SPU
                 </el-button>
             </template>
@@ -65,6 +69,7 @@
         <el-card class="card" v-show="scene === 'EditORAddSPU'">
             <EditORAddSPU
                 @trigToShowSPUList="trigToShowSPUList"
+                @updateSPUListNow="updateSPUListNow"
                 ref="EditORAddSPURef"
             ></EditORAddSPU>
         </el-card>
@@ -99,13 +104,14 @@ let { pageNo, pageSize, total } = usePagination(updateSPUListNow);
 type sceneT = "ShowSPUList" | "EditORAddSPU";
 let scene = ref<sceneT>("ShowSPUList");
 
-const trigToAddSPU = () => {
+const trigToAddSPU = (c3Id: number) => {
     scene.value = "EditORAddSPU";
+    EditORAddSPURef.value.initAddSPUInfo(c3Id);
 };
 
 const trigToEditSPU = async (row: SPU) => {
     scene.value = "EditORAddSPU";
-    await EditORAddSPURef.value.initSPUInfo(row);
+    await EditORAddSPURef.value.initEditSPUInfo(row);
 };
 
 const trigToShowSPUList = () => {
