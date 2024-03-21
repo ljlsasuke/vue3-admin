@@ -31,8 +31,9 @@
                         <el-button
                             type="primary"
                             icon="Plus"
-                            title="添加SPU"
+                            title="添加SKU"
                             size="small"
+                            @click="trigToAddSKU"
                         ></el-button>
                         <el-button
                             type="warning"
@@ -44,7 +45,7 @@
                         <el-button
                             type="info"
                             icon="View"
-                            title="查看SPU"
+                            title="查看SKU"
                             size="small"
                         ></el-button>
                         <el-button
@@ -73,12 +74,16 @@
                 ref="EditORAddSPURef"
             ></EditORAddSPU>
         </el-card>
+        <el-card class="card" v-show="scene === 'AddSKU'">
+            <AddSKU @trigToShowSPUList="trigToShowSPUList"></AddSKU>
+        </el-card>
     </div>
 </template>
 
 <script lang="ts" setup name="SPU">
 import { ref, reactive, watch } from "vue";
 import EditORAddSPU from "./components/EditORAddSPU.vue";
+import AddSKU from "./components/AddSKU.vue";
 import uesCategoryStore from "@/store/modules/Category";
 import usePagination from "./hooks/usePagination";
 import { ElMessage } from "element-plus";
@@ -101,8 +106,8 @@ let updateSPUListNow = async () => {
 let { pageNo, pageSize, total } = usePagination(updateSPUListNow);
 
 // 1. SPUlist 添加2.修改SPY  3.添加SKU
-type sceneT = "ShowSPUList" | "EditORAddSPU";
-let scene = ref<sceneT>("ShowSPUList");
+type sceneT = "ShowSPUList" | "EditORAddSPU" | "AddSKU";
+let scene = ref<sceneT>("AddSKU");
 
 const trigToAddSPU = (c3Id: number) => {
     scene.value = "EditORAddSPU";
@@ -112,6 +117,10 @@ const trigToAddSPU = (c3Id: number) => {
 const trigToEditSPU = async (row: SPU) => {
     scene.value = "EditORAddSPU";
     await EditORAddSPURef.value.initEditSPUInfo(row);
+};
+
+const trigToAddSKU = () => {
+    scene.value = "AddSKU";
 };
 
 const trigToShowSPUList = () => {
