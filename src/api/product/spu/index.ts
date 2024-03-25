@@ -6,7 +6,8 @@ import type {
     HasSaleAttrResponseData,
     getSPUImageListRes,
     SPU,
-    AddSKUReq,
+    SKU,
+    getSKUsInfoRes,
 } from "./type";
 
 // 获取SPU分页列表(只有名称和描述)
@@ -60,9 +61,24 @@ export function EditORAddSPU(spu: SPU) {
         });
 }
 
-export function AddSKU(data: AddSKUReq) {
+export function AddSKU(data: SKU) {
     return request<any, any>({
         url: "/admin/product/saveSkuInfo",
         method: "post",
+        data,
+    });
+}
+
+export function getSKUsInfo(spuId: number) {
+    return request<any, getSKUsInfoRes>({
+        url: `/admin/product/findBySpuId/${spuId}`,
+        method: "get",
+    });
+}
+
+export function deleteSPU(spuId: number) {
+    return request<any, any>({
+        url: `/admin/product/deleteSpu/${spuId}`,
+        method: "delete",
     });
 }

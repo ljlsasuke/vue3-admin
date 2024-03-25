@@ -110,7 +110,7 @@ import type { AttrInfo } from "@/api/product/attr/type";
 import type {
     SpuImg,
     SaleAttr,
-    AddSKUReq,
+    SKU,
     attrSelected,
     saleAttrSelected,
 } from "@/api/product/spu/type";
@@ -122,7 +122,7 @@ let imgs = ref<SpuImg[]>([]);
 let attrs = ref<AttrInfo[]>([]);
 let saleAttrs = ref<SaleAttr[]>([]);
 
-let skuInfo = reactive<AddSKUReq>({
+let skuInfo = reactive<SKU>({
     category3Id: -1,
     spuId: -1,
     tmId: -1,

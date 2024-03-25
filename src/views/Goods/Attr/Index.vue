@@ -126,7 +126,7 @@
 </template>
 
 <script lang="ts" setup name="Attr">
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeUnmount } from "vue";
 import uesCategoryStore from "@/store/modules/Category";
 import useSaveAttrInfo from "./hooks/useSaveAttrInfo";
 import { getAttrInfoList, deleteAttr } from "@/api/product/attr/index";
@@ -192,6 +192,9 @@ watch(
         updateAttrInfoListNow();
     },
 );
+onBeforeUnmount(() => {
+    CategoryStore.$reset();
+});
 </script>
 
 <style lang="scss" scoped>

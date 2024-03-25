@@ -80,7 +80,7 @@ export type saleAttrSelected = {
     saleAttrValueId: number;
 };
 
-export interface AddSKUReq {
+export interface SKU {
     category3Id: number;
     spuId: number;
     tmId: number;
@@ -91,4 +91,8 @@ export interface AddSKUReq {
     skuAttrValueList: attrSelected[];
     skuSaleAttrValueList: saleAttrSelected[];
     skuDefaultImg: string;
+}
+
+export interface getSKUsInfoRes extends baseResponse {
+    data: SKU[];
 }

@@ -46,12 +46,14 @@
                             type="info"
                             icon="View"
                             title="查看SKU"
+                            @click="viewSKUs(row.id)"
                             size="small"
                         ></el-button>
                         <el-button
                             type="danger"
                             icon="Delete"
                             title="删除SPU"
+                            @click="trigDeleteSPU(row.id)"
                             size="small"
                         ></el-button>
                     </template>
@@ -80,22 +82,41 @@
                 ref="AddSKURef"
             ></AddSKU>
         </el-card>
+        <el-dialog v-model="dialogTableVisible" title="已有的SKU" width="800">
+            <el-table border stripe :data="SKUs">
+                <el-table-column
+                    prop="skuName"
+                    label="sku名字"
+                ></el-table-column>
+                <el-table-column prop="price" label="sku价格"></el-table-column>
+                <el-table-column
+                    label="sku重量"
+                    prop="weight"
+                ></el-table-column>
+                <el-table-column prop="skuDefaultImg" label="sku图片">
+                    <template #="{ row }">
+                        <img :src="row.skuDefaultImg" style="width: 120px" />
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" setup name="SPU">
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, onBeforeUnmount } from "vue";
 import EditORAddSPU from "./components/EditORAddSPU.vue";
 import AddSKU from "./components/AddSKU.vue";
 import uesCategoryStore from "@/store/modules/Category";
 import usePagination from "./hooks/usePagination";
 import { ElMessage } from "element-plus";
-import { getSPUList } from "@/api/product/spu/index";
-import { SPU } from "@/api/product/spu/type";
+import { getSPUList, getSKUsInfo, deleteSPU } from "@/api/product/spu/index";
+import type { SPU, SKU } from "@/api/product/spu/type";
 const CategoryStore = uesCategoryStore();
 let SPUListNow = ref<SPU[]>([]);
 let EditORAddSPURef = ref();
 let AddSKURef = ref();
+let dialogTableVisible = ref<boolean>(false);
 let updateSPUListNow = async () => {
     const { code, data } = await getSPUList(
         pageNo.value,
@@ -138,6 +159,27 @@ const trigToShowSPUList = () => {
     scene.value = "ShowSPUList";
 };
 
+let SKUs = ref<SKU[]>([]);
+
+const viewSKUs = async (id: number) => {
+    let { code, data } = await getSKUsInfo(id);
+    if (code === 200) {
+        SKUs.value = data;
+        dialogTableVisible.value = true;
+    }
+};
+
+const trigDeleteSPU = async (id: number) => {
+    let { code } = await deleteSPU(id);
+    if (code === 200) {
+        ElMessage({
+            type: "success",
+            message: "删除成功",
+        });
+        updateSPUListNow();
+    }
+};
+
 watch(
     () => CategoryStore.c3Id,
     () => {
@@ -145,6 +187,9 @@ watch(
         updateSPUListNow();
     },
 );
+onBeforeUnmount(() => {
+    CategoryStore.$reset();
+});
 </script>
 
 <style lang="scss" scoped>
