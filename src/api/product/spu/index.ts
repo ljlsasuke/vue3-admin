@@ -6,6 +6,7 @@ import type {
     HasSaleAttrResponseData,
     getSPUImageListRes,
     SPU,
+    AddSKUReq,
 } from "./type";
 
 // 获取SPU分页列表(只有名称和描述)
@@ -57,4 +58,11 @@ export function EditORAddSPU(spu: SPU) {
             method: "post",
             data: spu,
         });
+}
+
+export function AddSKU(data: AddSKUReq) {
+    return request<any, any>({
+        url: "/admin/product/saveSkuInfo",
+        method: "post",
+    });
 }

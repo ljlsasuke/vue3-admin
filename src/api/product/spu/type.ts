@@ -70,3 +70,25 @@ export type HasAttr = { id: number; name: string };
 export interface HasSaleAttrResponseData extends baseResponse {
     data: HasAttr[];
 }
+
+export type attrSelected = {
+    attrId: number;
+    valueId: number;
+};
+export type saleAttrSelected = {
+    saleAttrId: number;
+    saleAttrValueId: number;
+};
+
+export interface AddSKUReq {
+    category3Id: number;
+    spuId: number;
+    tmId: number;
+    skuName: string;
+    price: number;
+    weight: number;
+    skuDesc: string;
+    skuAttrValueList: attrSelected[];
+    skuSaleAttrValueList: saleAttrSelected[];
+    skuDefaultImg: string;
+}

@@ -33,7 +33,7 @@
                             icon="Plus"
                             title="添加SKU"
                             size="small"
-                            @click="trigToAddSKU"
+                            @click="trigToAddSKU(row.id, row.tmId)"
                         ></el-button>
                         <el-button
                             type="warning"
@@ -75,7 +75,10 @@
             ></EditORAddSPU>
         </el-card>
         <el-card class="card" v-show="scene === 'AddSKU'">
-            <AddSKU @trigToShowSPUList="trigToShowSPUList"></AddSKU>
+            <AddSKU
+                @trigToShowSPUList="trigToShowSPUList"
+                ref="AddSKURef"
+            ></AddSKU>
         </el-card>
     </div>
 </template>
@@ -92,6 +95,7 @@ import { SPU } from "@/api/product/spu/type";
 const CategoryStore = uesCategoryStore();
 let SPUListNow = ref<SPU[]>([]);
 let EditORAddSPURef = ref();
+let AddSKURef = ref();
 let updateSPUListNow = async () => {
     const { code, data } = await getSPUList(
         pageNo.value,
@@ -107,7 +111,7 @@ let { pageNo, pageSize, total } = usePagination(updateSPUListNow);
 
 // 1. SPUlist 添加2.修改SPY  3.添加SKU
 type sceneT = "ShowSPUList" | "EditORAddSPU" | "AddSKU";
-let scene = ref<sceneT>("AddSKU");
+let scene = ref<sceneT>("ShowSPUList");
 
 const trigToAddSPU = (c3Id: number) => {
     scene.value = "EditORAddSPU";
@@ -119,8 +123,15 @@ const trigToEditSPU = async (row: SPU) => {
     await EditORAddSPURef.value.initEditSPUInfo(row);
 };
 
-const trigToAddSKU = () => {
+const trigToAddSKU = (spuId: number, tmId: number) => {
     scene.value = "AddSKU";
+    AddSKURef.value.initAddSKU(
+        CategoryStore.c1Id,
+        CategoryStore.c2Id,
+        CategoryStore.c3Id,
+        spuId,
+        tmId,
+    );
 };
 
 const trigToShowSPUList = () => {
