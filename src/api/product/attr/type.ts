@@ -1,4 +1,4 @@
-import { baseResponse } from "@/api/typeIndex";
+import type { baseResponse } from "@/api/typeIndex";
 export interface categoryObj {
     id: string;
     name: string;

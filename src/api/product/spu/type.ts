@@ -1,5 +1,5 @@
-import { baseResponse } from "@/api/typeIndex";
-import { TradeMark } from "@/api/product/trademark/type";
+import type { baseResponse } from "@/api/typeIndex";
+import type { TradeMark } from "@/api/product/trademark/type";
 export interface SPU {
     id?: number;
     spuName: string;
@@ -72,18 +72,29 @@ export interface HasSaleAttrResponseData extends baseResponse {
 }
 
 export type attrSelected = {
+    id?: number;
+    valueName?: string;
     attrId: number;
     valueId: number;
 };
 export type saleAttrSelected = {
+    id?: number;
+    saleAttrValueName?: string;
     saleAttrId: number;
     saleAttrValueId: number;
 };
-
+type skuImage = {
+    id: number;
+    imgUrl: string;
+    imgName: string;
+};
 export interface SKU {
     category3Id: number;
     spuId: number;
     tmId: number;
+    id?: number;
+    isSale?: 0 | 1; //因为添加SKU和展示SKU列表都用不到这个,为了省事设置为可选
+    skuImageList?: skuImage[];
     skuName: string;
     price: number;
     weight: number;
