@@ -65,7 +65,7 @@
                 :total="total"
                 v-model:current-page="pageNo"
                 v-model:page-size="pageSize"
-                :page-sizes="[3, 5, 7, 9]"
+                :page-sizes="PageSizes"
                 style="margin-top: 18px"
             />
         </el-card>
@@ -128,7 +128,7 @@ let updateSPUListNow = async () => {
         SPUListNow.value = data.records;
     }
 };
-let { pageNo, pageSize, total } = usePagination(updateSPUListNow);
+let { pageNo, pageSize, total, PageSizes } = usePagination(updateSPUListNow);
 
 // 1. SPUlist 添加2.修改SPY  3.添加SKU
 type sceneT = "ShowSPUList" | "EditORAddSPU" | "AddSKU";

@@ -49,7 +49,7 @@
                 :total="total"
                 v-model:current-page="pageNo"
                 v-model:page-size="pageSize"
-                :page-sizes="[3, 5, 7, 9]"
+                :page-sizes="PageSizes"
             />
         </el-card>
         <el-dialog
@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts" setup name="TradeMark">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
@@ -134,7 +134,7 @@ const updateTML = async () => {
         });
     }
 };
-let { pageNo, pageSize, total } = usePagination(updateTML);
+let { pageNo, pageSize, total, PageSizes } = usePagination(updateTML);
 
 const formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
 
@@ -218,4 +218,3 @@ onMounted(() => {
     text-align: center;
 }
 </style>
-@/api/product/trademark/index@/api/product/trademark/type

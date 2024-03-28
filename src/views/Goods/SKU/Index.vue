@@ -71,7 +71,7 @@
             :total="total"
             v-model:current-page="pageNo"
             v-model:page-size="pageSize"
-            :page-sizes="[10, 20, 30, 40]"
+            :page-sizes="PageSizes"
             style="margin-top: 20px"
         />
         <el-drawer v-model="drawer" title="查看商品详情">
@@ -205,7 +205,7 @@ const trigDeleteSKU = async (id: number) => {
     }
 };
 
-let { pageNo, pageSize, total } = usePagination(updateNSL);
+let { pageNo, pageSize, total, PageSizes } = usePagination(updateNSL);
 onMounted(() => {
     updateNSL();
 });
