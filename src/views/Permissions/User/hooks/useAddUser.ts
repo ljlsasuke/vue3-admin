@@ -4,7 +4,7 @@ import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
 import { AddORUpdateUser } from "@/api/permissions/user/index";
 import type { AddORUpdateUserReq, User } from "@/api/permissions/user/type";
-export default function (updateUL: () => void) {
+export default function () {
     let addUserDrawer = ref<boolean>(false);
 
     let nowFormData = reactive<AddORUpdateUserReq>({
@@ -66,12 +66,12 @@ export default function (updateUL: () => void) {
                 message: `${nowFormData.id ? "修改" : "添加"}成功`,
             });
             cancel(formEl);
-            updateUL();
         } else {
             ElMessage({
                 type: "error",
                 message: `${nowFormData.id ? "修改" : "添加"}失败！`,
             });
+            return Promise.reject(`${nowFormData.id ? "修改" : "添加"}失败！`);
         }
     };
     const trigAddUser = () => {

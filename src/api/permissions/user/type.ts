@@ -27,3 +27,13 @@ export interface AddORUpdateUserReq {
     name: string;
     password: string;
 }
+
+export interface Role {
+    id?: number;
+    roleName: string;
+    remark: any;
+}
+
+export interface getRolesToAssignRes extends baseResponse {
+    data: { assignRoles: Role[]; allRolesList: Role[] };
+}
