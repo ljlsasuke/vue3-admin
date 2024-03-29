@@ -53,7 +53,12 @@
                         <el-button type="primary" size="small" icon="User">
                             分配角色
                         </el-button>
-                        <el-button type="primary" size="small" icon="Edit">
+                        <el-button
+                            type="primary"
+                            size="small"
+                            icon="Edit"
+                            @click="trigEditUser(row)"
+                        >
                             编辑
                         </el-button>
                         <el-button type="danger" size="small" icon="delete">
@@ -77,10 +82,12 @@
                 label-position="left"
                 label-width="100px"
                 :model="nowFormData"
+                :rules="rules"
+                ref="formRef"
             >
-                <el-form-item label="用户姓名：" prop="username">
+                <el-form-item label="用户名：" prop="username">
                     <el-input
-                        placeholder="请输入用户姓名"
+                        placeholder="请输入用户名"
                         v-model="nowFormData.username"
                     />
                 </el-form-item>
@@ -95,21 +102,26 @@
                         type="password"
                         placeholder="请输入用户密码"
                         v-model="nowFormData.password"
+                        show-password
                         autocomplete="new-password"
                     />
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="cancel">取消</el-button>
-                <el-button type="primary" @click="save">保存</el-button>
+                <el-button @click="cancel(formRef)">取消</el-button>
+                <el-button type="primary" @click="save(formRef)">
+                    保存
+                </el-button>
             </template>
         </el-drawer>
     </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup nam="User">
 import { ref, reactive, onMounted } from "vue";
+import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
+import type { FormInstance } from "element-plus";
 import usePagination from "@/views/Goods/TradeMark/hooks/usePagination";
 import useAddUser from "./hooks/useAddUser";
 import { getUserList } from "@/api/permissions/user/index";
@@ -128,8 +140,17 @@ const updateUL = async () => {
         });
     }
 };
+let formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
 
-let { addUserDrawer, trigAddUser, nowFormData, save } = useAddUser(updateUL);
+let {
+    addUserDrawer,
+    trigAddUser,
+    nowFormData,
+    save,
+    cancel,
+    rules,
+    trigEditUser,
+} = useAddUser(updateUL);
 
 let { pageNo, pageSize, total, PageSizes } = usePagination(updateUL);
 onMounted(() => {
