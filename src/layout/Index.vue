@@ -3,7 +3,7 @@
         <!-- 左侧菜单 -->
         <div :class="{ slider: true, isCollapse: layoutStore.isCollapse }">
             <div class="logo">
-                <img src="/src/assets/images/logo.png" />
+                <img src="/src/assets/images/logo-with-shadow.png" />
                 <p v-show="!layoutStore.isCollapse">{{ setting.AdminName }}</p>
             </div>
             <el-scrollbar class="scrollbar">
