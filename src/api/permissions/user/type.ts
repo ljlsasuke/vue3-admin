@@ -30,8 +30,10 @@ export interface AddORUpdateUserReq {
 
 export interface Role {
     id?: number;
+    createTime?: string;
+    updateTime?: string;
     roleName: string;
-    remark: any;
+    remark?: any;
 }
 
 export interface getRolesToAssignRes extends baseResponse {

@@ -65,7 +65,7 @@ export default function () {
                 type: "success",
                 message: `${nowFormData.id ? "修改" : "添加"}成功`,
             });
-            cancel(formEl);
+            addUserDrawer.value = false;
         } else {
             ElMessage({
                 type: "error",

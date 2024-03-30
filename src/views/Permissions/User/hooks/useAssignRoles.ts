@@ -36,7 +36,7 @@ export default function () {
                 type: "success",
                 message: "角色设置成功",
             });
-            cancelAssignRole();
+            assignRolesDrawer.value = false;
         } else {
             ElMessage({
                 type: "error",

@@ -13,7 +13,7 @@
                     <el-button
                         type="primary"
                         :disabled="searchKeyWord.trim().length === 0"
-                        @click="search()"
+                        @click="search"
                     >
                         搜索
                     </el-button>
@@ -43,7 +43,7 @@
                     width="55"
                     align="center"
                 />
-                <el-table-column label="id" prop="id" />
+                <el-table-column label="id" prop="id" align="center" />
                 <el-table-column
                     label="用户名字"
                     prop="username"
@@ -110,7 +110,11 @@
                 style="margin-top: 18px"
             />
         </el-card>
-        <el-drawer v-model="addUserDrawer" title="添加用户">
+        <el-drawer
+            v-model="addUserDrawer"
+            title="添加用户"
+            @close="cancel(formRef)"
+        >
             <el-form
                 label-position="left"
                 label-width="100px"
@@ -141,7 +145,7 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="cancel(formRef)">取消</el-button>
+                <el-button @click="addUserDrawer = false">取消</el-button>
                 <el-button
                     type="primary"
                     @click="save(formRef).then(() => updateUL())"
@@ -150,7 +154,11 @@
                 </el-button>
             </template>
         </el-drawer>
-        <el-drawer v-model="assignRolesDrawer" title="分配角色(职位)">
+        <el-drawer
+            v-model="assignRolesDrawer"
+            title="分配角色(职位)"
+            @close="cancelAssignRole"
+        >
             <el-form label-position="left" label-width="70px">
                 <el-form-item label="用户名：">
                     <el-input
@@ -181,7 +189,7 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="cancelAssignRole">取消</el-button>
+                <el-button @click="assignRolesDrawer = false">取消</el-button>
                 <el-button
                     type="primary"
                     @click="saveAssignRole().then(() => updateUL())"
