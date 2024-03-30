@@ -108,7 +108,7 @@ import { ref, reactive, watch, onBeforeUnmount } from "vue";
 import EditORAddSPU from "./components/EditORAddSPU.vue";
 import AddSKU from "./components/AddSKU.vue";
 import uesCategoryStore from "@/store/modules/Category";
-import usePagination from "./hooks/usePagination";
+import usePagination from "@/hooks/usePagination";
 import { ElMessage } from "element-plus";
 import { getSPUList, getSKUsInfo, deleteSPU } from "@/api/product/spu/index";
 import type { SPU, SKU } from "@/api/product/spu/type";
@@ -128,7 +128,8 @@ let updateSPUListNow = async () => {
         SPUListNow.value = data.records;
     }
 };
-let { pageNo, pageSize, total, PageSizes } = usePagination(updateSPUListNow);
+let PageSizes = [3, 5, 7, 9];
+let { pageNo, pageSize, total } = usePagination(updateSPUListNow, PageSizes[0]);
 
 // 1. SPUlist 添加2.修改SPY  3.添加SKU
 type sceneT = "ShowSPUList" | "EditORAddSPU" | "AddSKU";

@@ -115,7 +115,7 @@ import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
-import usePagination from "./hooks/usePagination";
+import usePagination from "@/hooks/usePagination";
 import useDialog from "./hooks/useDialog";
 import useForm from "./hooks/useForm";
 import { getTraderMark } from "@/api/product/trademark/index";
@@ -134,7 +134,8 @@ const updateTML = async () => {
         });
     }
 };
-let { pageNo, pageSize, total, PageSizes } = usePagination(updateTML);
+let PageSizes = [3, 5, 7, 9];
+let { pageNo, pageSize, total } = usePagination(updateTML, PageSizes[0]);
 
 const formRef: Ref<FormInstance | undefined> = ref<FormInstance>();
 

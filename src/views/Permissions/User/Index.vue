@@ -199,7 +199,7 @@ import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
-import usePagination from "@/views/Goods/TradeMark/hooks/usePagination";
+import usePagination from "@/hooks/usePagination";
 import useAddUser from "./hooks/useAddUser";
 import useDeleteUser from "./hooks/useDeleteUser";
 import useAssignRoles from "./hooks/useAssignRoles";
@@ -250,7 +250,8 @@ let {
     assignRolesChange,
     userInfo,
 } = useAssignRoles();
-let { pageNo, pageSize, total, PageSizes } = usePagination(updateUL);
+let PageSizes = [3, 5, 7, 9];
+let { pageNo, pageSize, total } = usePagination(updateUL, PageSizes[0]);
 onMounted(() => {
     updateUL();
 });

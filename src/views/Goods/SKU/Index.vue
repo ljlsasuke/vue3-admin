@@ -139,7 +139,7 @@
 <script lang="ts" setup name="SKU">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
-import usePagination from "./hooks/usePagination";
+import usePagination from "@/hooks/usePagination";
 import {
     getSKUList,
     onSaleSKU,
@@ -204,8 +204,8 @@ const trigDeleteSKU = async (id: number) => {
         });
     }
 };
-
-let { pageNo, pageSize, total, PageSizes } = usePagination(updateNSL);
+let PageSizes = [10, 20, 30, 40];
+let { pageNo, pageSize, total } = usePagination(updateNSL, PageSizes[0]);
 onMounted(() => {
     updateNSL();
 });
