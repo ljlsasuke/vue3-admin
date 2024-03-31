@@ -3,6 +3,7 @@ import { viteMockServe } from "vite-plugin-mock";
 import vue from "@vitejs/plugin-vue";
 import VueSetUpExtend from "vite-plugin-vue-setup-extend";
 import path from "path";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
     let env = loadEnv(mode, process.cwd()); //获取当前环境变量（开发，测试，生产）
@@ -13,6 +14,10 @@ export default defineConfig(({ command, mode }) => {
             viteMockServe({
                 mockPath: "./src/mock/",
                 enable: command === "serve",
+            }),
+            createSvgIconsPlugin({
+                iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
+                symbolId: "icon-[dir]-[name]",
             }),
         ],
         resolve: {

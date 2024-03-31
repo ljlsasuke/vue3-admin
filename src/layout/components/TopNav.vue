@@ -39,12 +39,47 @@
                 circle
                 @click="changeFullScreen"
             ></el-button>
-            <el-button
-                type="primary"
-                size="small"
-                icon="Setting"
-                circle
-            ></el-button>
+            <el-popover
+                placement="bottom"
+                title="主题设置"
+                :width="300"
+                trigger="hover"
+            >
+                <el-form>
+                    <el-form-item label="主题颜色">
+                        <el-color-picker
+                            @change="setColor"
+                            v-model="color"
+                            size="small"
+                            show-alpha
+                            :predefine="predefineColors"
+                            :teleported="false"
+                        />
+                        <!-- 如果不设置teleported的话，鼠标刚进选择器pop就消失了 -->
+                    </el-form-item>
+                    <el-form-item label="暗黑模式">
+                        <el-switch
+                            v-model="isDark"
+                            active-action-icon="Moon"
+                            inactive-action-icon="sunny"
+                            @change="darkChange"
+                            style="
+                                --el-switch-on-color: #2c2c2c;
+                                --el-switch-off-color: #f2f2f2;
+                            "
+                        />
+                    </el-form-item>
+                </el-form>
+                <template #reference>
+                    <el-button
+                        type="primary"
+                        size="small"
+                        icon="Setting"
+                        circle
+                    ></el-button>
+                </template>
+            </el-popover>
+
             <div class="avatar">
                 <img :src="userStore.avatar" />
             </div>
@@ -102,6 +137,36 @@ let logout = () => {
             });
         })
         .catch((err: Error) => console.error(err));
+};
+
+import { ref } from "vue";
+
+const color = ref("#409eff");
+const predefineColors = ref([
+    "#ff4500",
+    "#ff8c00",
+    "#ffd700",
+    "#90ee90",
+    "#00ced1",
+    "#1e90ff",
+    "#c71585",
+    "rgba(255, 69, 0, 0.68)",
+    "rgb(255, 120, 0)",
+    "hsv(51, 100, 98)",
+    "hsva(120, 40, 94, 0.5)",
+    "hsl(181, 100%, 37%)",
+    "hsla(209, 100%, 56%, 0.73)",
+    "#c7158577",
+]);
+let isDark = ref(false);
+const darkChange = () => {
+    let html = document.documentElement;
+    if (isDark.value) html.classList.add("dark");
+    else html.classList.remove("dark");
+};
+const setColor = () => {
+    let html = document.documentElement;
+    html.style.setProperty("--el-color-primary", color.value);
 };
 </script>
 

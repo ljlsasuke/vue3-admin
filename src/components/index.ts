@@ -1,7 +1,7 @@
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import ThreeCategory from "./ThreeCategory/Index.vue";
-
-const AllGlobalComponent: any = { ThreeCategory };
+import SvgIcon from "./SvgIcon/Index.vue";
+const AllGlobalComponent: any = { ThreeCategory, SvgIcon };
 export default {
     install(app: any) {
         Object.keys(AllGlobalComponent).forEach((key) => {
