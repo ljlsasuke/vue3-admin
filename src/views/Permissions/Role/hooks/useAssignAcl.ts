@@ -6,7 +6,6 @@ import {
     deleteRole,
 } from "@/api/permissions/role/index";
 import type { MenuAcl } from "@/api/permissions/role/type";
-import type { Role } from "@/api/permissions/user/type";
 export default function (tree: any) {
     let assignAclDrawer = ref<boolean>(false);
     const defaultProps = {
@@ -26,7 +25,7 @@ export default function (tree: any) {
     const initUI = async (roleId: number) => {
         let { code, data } = await getRoleAssignedMenuAcl(roleId);
         if (code === 200) {
-            MenuAclData.value = [data[0]];
+            MenuAclData.value = data;
             IsSelectedIds.value = filterSelectedMenu(MenuAclData.value, []);
         } else {
             ElMessage({
