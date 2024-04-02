@@ -43,23 +43,27 @@
                         type="success"
                         size="small"
                         :icon="row.isSale === 0 ? 'Top' : 'Bottom'"
+                        v-has="'btn.Sku.updown'"
                         @click="changeSale(row.id, row.isSale, $index)"
                     ></el-button>
                     <el-button
                         type="primary"
                         size="small"
                         icon="Edit"
+                        v-has="'btn.Sku.update'"
                     ></el-button>
                     <el-button
                         type="info"
                         size="small"
                         icon="InfoFilled"
+                        v-has="'btn.Sku.detail'"
                         @click="trigOpenDrawer(row.id)"
                     ></el-button>
                     <el-button
                         type="danger"
                         size="small"
                         icon="delete"
+                        v-has="'btn.Sku.remove'"
                         @click="trigDeleteSKU(row.id)"
                     ></el-button>
                 </template>

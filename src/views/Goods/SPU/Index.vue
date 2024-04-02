@@ -8,6 +8,7 @@
                     type="primary"
                     icon="Plus"
                     @click="trigToAddSPU(CategoryStore.c3Id)"
+                    v-has="'btn.Spu.add'"
                 >
                     添加SPU
                 </el-button>
@@ -33,12 +34,14 @@
                             icon="Plus"
                             title="添加SKU"
                             size="small"
+                            v-has="'btn.Spu.addsku'"
                             @click="trigToAddSKU(row.id, row.tmId)"
                         ></el-button>
                         <el-button
                             type="warning"
                             icon="Edit"
                             title="编辑SPU"
+                            v-has="'btn.Spu.update'"
                             @click="trigToEditSPU(row)"
                             size="small"
                         ></el-button>
@@ -46,6 +49,7 @@
                             type="info"
                             icon="View"
                             title="查看SKU"
+                            v-has="'btn.Spu.skus'"
                             @click="viewSKUs(row.id)"
                             size="small"
                         ></el-button>
@@ -53,6 +57,7 @@
                             type="danger"
                             icon="Delete"
                             title="删除SPU"
+                            v-has="'btn.Spu.delete'"
                             @click="trigDeleteSPU(row.id)"
                             size="small"
                         ></el-button>

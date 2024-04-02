@@ -23,7 +23,12 @@
             </el-form>
         </el-card>
         <el-card class="card">
-            <el-button type="primary" icon="Plus" @click="trigAddRole">
+            <el-button
+                type="primary"
+                icon="Plus"
+                @click="trigAddRole"
+                v-has="'btn.Role.add'"
+            >
                 添加角色
             </el-button>
             <el-table style="margin-top: 10px" border :data="nowRoleList">
@@ -57,6 +62,7 @@
                             size="small"
                             icon="User"
                             @click="trigAssignAcl(row.id)"
+                            v-has="'btn.Role.assgin'"
                         >
                             分配权限
                         </el-button>
@@ -65,6 +71,7 @@
                             size="small"
                             icon="Edit"
                             @click="trigEditRole(row)"
+                            v-has="'btn.Role.update'"
                         >
                             编辑
                         </el-button>
@@ -72,6 +79,7 @@
                             type="danger"
                             size="small"
                             icon="delete"
+                            v-has="'btn.Role.remove'"
                             @click="
                                 trigDeleteRole(row.id).then(() => updateNRL())
                             "

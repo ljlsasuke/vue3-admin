@@ -8,6 +8,7 @@
                     icon="Plus"
                     :disabled="!isCanToEditOrAddAttr"
                     @click="trigAddAttr"
+                    v-has="'btn.Attr.add'"
                 >
                     添加平台属性
                 </el-button>
@@ -42,12 +43,14 @@
                             type="primary"
                             icon="Edit"
                             size="small"
+                            v-has="'btn.Attr.update'"
                             @click="trigEditAttr(row)"
                         ></el-button>
                         <el-popconfirm
                             title="确认删除？"
                             icon="Delete"
                             @confirm="deleteConfirm(row.id)"
+                            v-has="'btn.Attr.remove'"
                         >
                             <template #reference>
                                 <el-button

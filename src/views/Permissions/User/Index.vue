@@ -22,11 +22,18 @@
             </el-form>
         </el-card>
         <el-card class="card">
-            <el-button type="primary" @click="trigAddUser">添加</el-button>
+            <el-button
+                type="primary"
+                @click="trigAddUser"
+                v-has="'btn.User.add'"
+            >
+                添加
+            </el-button>
             <el-button
                 type="danger"
                 @click="trigDeleteUsers().then(() => updateUL())"
                 :disabled="userIds.length === 0"
+                v-has="'btn.User.remove'"
             >
                 批量删除
             </el-button>
@@ -76,6 +83,7 @@
                             size="small"
                             icon="User"
                             @click="trigAssignRoles(row)"
+                            v-has="'btn.User.assgin'"
                         >
                             分配角色
                         </el-button>
@@ -83,6 +91,7 @@
                             type="primary"
                             size="small"
                             icon="Edit"
+                            v-has="'btn.User.update'"
                             @click="trigEditUser(row)"
                         >
                             编辑
@@ -91,6 +100,7 @@
                             type="danger"
                             size="small"
                             icon="delete"
+                            v-has="'btn.User.remove'"
                             @click="
                                 trigDeleteAUser(row.id).then(() => updateUL())
                             "

@@ -1,7 +1,12 @@
 <template>
     <div>
         <el-card class="card">
-            <el-button type="primary" icon="Plus" @click="trigAdd">
+            <el-button
+                type="primary"
+                icon="Plus"
+                @click="trigAdd"
+                v-has="'btn.Trademark.add'"
+            >
                 增加品牌
             </el-button>
 
@@ -27,11 +32,13 @@
                             type="primary"
                             icon="Edit"
                             @click="trigEdit(row)"
+                            v-has="'btn.Trademark.update'"
                         ></el-button>
                         <el-popconfirm
                             title="确认删除？"
                             icon="Delete"
                             @confirm="deleteConfirm(row.id)"
+                            v-has="'btn.Trademark.remove'"
                         >
                             <template #reference>
                                 <el-button
@@ -119,7 +126,7 @@ import usePagination from "@/hooks/usePagination";
 import useDialog from "./hooks/useDialog";
 import useForm from "./hooks/useForm";
 import { getTraderMark } from "@/api/product/trademark/index";
-import type { TradeMark } from "@/api/product/trademark/type.ts";
+import type { TradeMark } from "@/api/product/trademark/type";
 let TMList = ref<TradeMark[]>([]); //当前页的品牌列表
 const updateTML = async () => {
     let res = await getTraderMark(pageNo.value, pageSize.value);

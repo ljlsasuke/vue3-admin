@@ -108,6 +108,7 @@ const useUserStore = defineStore("User", {
     getters: {
         avatar: (state) => state.userInfo.avatar,
         username: (state) => state.userInfo.name,
+        buttons: (state) => state.userInfo.buttons,
     },
 });
 

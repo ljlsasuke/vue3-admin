@@ -16,6 +16,7 @@
                         size="small"
                         icon="Plus"
                         :disabled="row.level === 4"
+                        v-has="'btn.Permission.add'"
                         @click="trigAdd(row)"
                     >
                         {{ row.level === 3 ? "添加功能" : "添加菜单" }}
@@ -25,6 +26,7 @@
                         size="small"
                         icon="Edit"
                         :disabled="row.level === 1"
+                        v-has="'btn.Permission.update'"
                         @click="trigEdit(row)"
                     >
                         编辑
@@ -34,6 +36,7 @@
                         size="small"
                         icon="delete"
                         :disabled="row.level === 1"
+                        v-has="'btn.Permission.remove'"
                         @click="trigDeleteMenu(row.id).then(() => updateAML())"
                     >
                         删除
