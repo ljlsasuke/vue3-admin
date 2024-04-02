@@ -2,18 +2,18 @@ import type { RouteRecordRaw } from "vue-router";
 import layout from "@/layout/Index.vue";
 export const asyncRoutes: RouteRecordRaw[] = [
     {
-        path: "/permissions",
-        name: "permissions",
+        path: "/acl",
+        name: "Acl",
         component: layout,
-        redirect: "/permissions/user",
+        redirect: "/acl/user",
         meta: {
             title: "权限管理",
             elIcon: "Lock",
         },
         children: [
             {
-                path: "/permissions/user",
-                name: "user",
+                path: "/acl/user",
+                name: "User",
                 component: () => import("@/views/Permissions/User/Index.vue"),
                 meta: {
                     title: "用户管理",
@@ -21,8 +21,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
                 },
             },
             {
-                path: "/permissions/role",
-                name: "role",
+                path: "/acl/role",
+                name: "Role",
                 component: () => import("@/views/Permissions/Role/Index.vue"),
                 meta: {
                     title: "角色管理",
@@ -30,8 +30,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
                 },
             },
             {
-                path: "/permissions/menu",
-                name: "menu",
+                path: "/acl/menu",
+                name: "Permission",
                 component: () => import("@/views/Permissions/Menu/Index.vue"),
                 meta: {
                     title: "菜单管理",
@@ -41,18 +41,18 @@ export const asyncRoutes: RouteRecordRaw[] = [
         ],
     },
     {
-        path: "/goods",
-        name: "goods",
+        path: "/product",
+        name: "Product",
         component: layout,
-        redirect: "/goods/trademark",
+        redirect: "/product/trademark",
         meta: {
             title: "商品管理",
             elIcon: "GoodsFilled",
         },
         children: [
             {
-                path: "/goods/trademark",
-                name: "trademark",
+                path: "/product/trademark",
+                name: "Trademark",
                 component: () => import("@/views/Goods/TradeMark/Index.vue"),
                 meta: {
                     title: "品牌管理",
@@ -60,8 +60,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
                 },
             },
             {
-                path: "/goods/attr",
-                name: "attr",
+                path: "/product/attr",
+                name: "Attr",
                 component: () => import("@/views/Goods/Attr/Index.vue"),
                 meta: {
                     title: "属性管理",
@@ -69,8 +69,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
                 },
             },
             {
-                path: "/goods/spu",
-                name: "spu",
+                path: "/product/spu",
+                name: "Spu",
                 component: () => import("@/views/Goods/SPU/Index.vue"),
                 meta: {
                     title: "SPU管理",
@@ -78,8 +78,8 @@ export const asyncRoutes: RouteRecordRaw[] = [
                 },
             },
             {
-                path: "/goods/sku",
-                name: "sku",
+                path: "/product/sku",
+                name: "Sku",
                 component: () => import("@/views/Goods/SKU/Index.vue"),
                 meta: {
                     title: "SKU管理",
@@ -138,6 +138,18 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/404/Index.vue"),
         meta: {
             hidden: true,
+            title: "404",
         },
     },
 ];
+
+export const anyRoute: RouteRecordRaw = {
+    path: "/:pathMatch(.*)*",
+    redirect: "/404",
+    name: "Any",
+    meta: {
+        title: "任意路由",
+        hidden: true,
+        icon: "DataLine",
+    },
+};

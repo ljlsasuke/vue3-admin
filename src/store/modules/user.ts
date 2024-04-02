@@ -1,26 +1,37 @@
 import { defineStore } from "pinia";
 import { ElMessage } from "element-plus";
+import cloneDeep from "lodash/cloneDeep";
 import { Login, getUserInfo, Logout } from "@/api/user/index";
 import type {
     dataLogin as dataLoginType,
     loginRes,
     userInfoResponseData,
     userInfo as userInfoType,
-} from "@/api/user/type.ts";
-import { constantRoutes, asyncRoutes } from "@/router/routes";
+} from "@/api/user/type";
+import { constantRoutes, asyncRoutes, anyRoute } from "@/router/routes";
 import type { RouteRecordRaw } from "vue-router";
+import router from "@/router";
 type UserState = {
     token: string;
     sliderMenuRoutes: RouteRecordRaw[];
     userInfo: userInfoType;
 };
 
+function filterAsyncRouter(aRoutes: RouteRecordRaw[], routes: string[]) {
+    return aRoutes.filter((item) => {
+        if (routes.includes(item.name as string)) {
+            if (item.children && item.children.length !== 0)
+                item.children = filterAsyncRouter(item.children, routes);
+            return true;
+        }
+    });
+}
+
 const useUserStore = defineStore("User", {
     state: (): UserState => {
         return {
             token: localStorage.getItem("TOKEN") || "",
-            // sliderMenuRoutes: constantRoutes,
-            sliderMenuRoutes: [...constantRoutes, ...asyncRoutes], //测试
+            sliderMenuRoutes: constantRoutes,
             userInfo: {
                 avatar: "",
                 name: "",
@@ -49,6 +60,14 @@ const useUserStore = defineStore("User", {
             let res: userInfoResponseData = await getUserInfo();
             if (res.code === 200) {
                 this.userInfo = res.data;
+                let userARoutes = filterAsyncRouter(
+                    cloneDeep(asyncRoutes),
+                    res.data.routes,
+                );
+                this.sliderMenuRoutes = [...constantRoutes, ...userARoutes];
+                [...userARoutes, anyRoute].forEach((route) =>
+                    router.addRoute(route),
+                );
                 return "GetUserInfo OK";
             } else {
                 const errorMessage = res.message;

@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { constantRoutes, asyncRoutes } from "./routes";
+import { constantRoutes } from "./routes";
 import pinia from "@/store";
 import useUserStore from "@/store/modules/user";
 import setting from "@/globalSetting.json";
@@ -10,8 +10,7 @@ nprogress.configure({ showSpinner: false }); //不要那个圆环
 let userStore = useUserStore(pinia);
 const router = createRouter({
     history: createWebHashHistory(),
-    // routes: constantRoutes,
-    routes: [...constantRoutes, ...asyncRoutes], //测试
+    routes: constantRoutes,
 });
 //全局前置路由守卫
 
@@ -26,7 +25,7 @@ router.beforeEach(async (to, from, next) => {
             else {
                 try {
                     await userStore.getUserInfo();
-                    next(); //切换路由时，获取到用户信息再放行，获取出错就登出
+                    next({ ...to });
                 } catch (error) {
                     await userStore.userLogout(); //这里应该解决不了logout出错的情况
                     next({
