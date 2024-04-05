@@ -35,7 +35,6 @@
 
 <script lang="ts" setup name="layout">
 import TopNav from "@/layout/components/TopNav.vue";
-import { ref, reactive } from "vue";
 import { useRoute } from "vue-router";
 import SliderMenu from "./components/SliderMenu.vue";
 import Main from "./components/Main.vue";

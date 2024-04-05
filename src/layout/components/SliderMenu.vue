@@ -1,5 +1,5 @@
 <template>
-    <template v-for="(item, index) in routes" :key="item.path">
+    <template v-for="item in routes" :key="item.path">
         <!-- 没有子路由的时候 -->
         <template v-if="!item.children">
             <el-menu-item

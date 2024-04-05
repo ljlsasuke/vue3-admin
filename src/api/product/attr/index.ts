@@ -34,7 +34,7 @@ export function getAttrInfoList(
 
 export function getAttrValueList(attrId: number) {
     return request<any, any>({
-        url: "/admin/product/getAttrValueList/${attrId}",
+        url: `/admin/product/getAttrValueList/${attrId}`,
         method: "get",
     });
 }

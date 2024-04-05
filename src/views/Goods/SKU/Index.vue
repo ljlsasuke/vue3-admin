@@ -141,7 +141,7 @@
 </template>
 
 <script lang="ts" setup name="SKU">
-import { ref, reactive, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import usePagination from "@/hooks/usePagination";
 import {
@@ -168,7 +168,6 @@ const updateNSL = async () => {
     if (code === 200) {
         nowSKUList.value = data.records;
         total.value = data.total;
-        console.log(data, "!!!!!");
     } else {
         ElMessage({
             type: "error",

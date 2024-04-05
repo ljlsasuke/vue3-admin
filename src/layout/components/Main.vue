@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import emitter from "@/utils/mitt";
 //最好的组件刷新方法就是给一个key,然后去变化key,下面贴两个链接
 //https://www.jianshu.com/p/638253a6de20
