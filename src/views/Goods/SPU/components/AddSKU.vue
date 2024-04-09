@@ -21,7 +21,7 @@
             <el-input type="textarea" v-model="skuInfo.skuDesc" />
         </el-form-item>
         <el-form-item label="平台属性">
-            <el-form :inline="true" label-position="left" label-width="50px">
+            <el-form :inline="true" label-position="left" label-width="70px">
                 <el-form-item
                     :label="attr.attrName"
                     v-for="(attr, index) in attrs"
@@ -39,7 +39,7 @@
             </el-form>
         </el-form-item>
         <el-form-item label="销售属性">
-            <el-form :inline="true" label-position="left" label-width="50px">
+            <el-form :inline="true" label-position="left" label-width="70px">
                 <el-form-item
                     :label="saleAttr.saleAttrName"
                     v-for="(saleAttr, index) in saleAttrs"

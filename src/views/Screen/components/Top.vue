@@ -45,6 +45,7 @@ onBeforeUnmount(() => {
             background: url(../images/dataScreen-header-btn-bg-l.png) no-repeat;
             line-height: 40px;
             text-align: center;
+            cursor: pointer;
         }
     }
     .right {
