@@ -161,15 +161,15 @@ let {
     handlePictureCardPreview,
     fileList,
 } = useImage();
-// 收集输入框的ref实例以便于去自动focus
-const inputArr: any[] = [];
+
 let {
     handleClose,
     showInput,
     handleInputConfirm,
     inputVisibleList,
     inputValueList,
-} = useSaleAttr(inputArr);
+    inputArr,
+} = useSaleAttr();
 
 let AllTraderMark = ref<TradeMark[]>([]);
 

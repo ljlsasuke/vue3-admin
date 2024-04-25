@@ -54,7 +54,6 @@ export default function () {
     };
     const assignRolesChange = (value: any[]) => {
         const checkedCount = value.length;
-        console.log(checkedCount);
         checkAll.value = checkedCount === allRolesList.value.length;
         isIndeterminate.value =
             checkedCount > 0 && checkedCount < allRolesList.value.length;

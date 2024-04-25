@@ -1,9 +1,11 @@
 import { reactive, nextTick } from "vue";
 import { ElMessage } from "element-plus";
 import type { SaleAttr, SaleAttrValue } from "@/api/product/spu/type";
-export default function (inputArr: any[]) {
+export default function () {
     const inputVisibleList = reactive<boolean[]>([]);
     const inputValueList = reactive<string[]>([]);
+    // 收集输入框的ref实例以便于去自动focus
+    const inputArr: any[] = [];
     // 删除某一个tag
     const handleClose = (row: SaleAttr, id: number) => {
         let i = row.spuSaleAttrValueList.findIndex((item) => {

@@ -153,7 +153,6 @@
 <script lang="ts" setup name="RoleAcl">
 import { ref, onMounted } from "vue";
 import { ElMessage } from "element-plus";
-import type { FormInstance } from "element-plus";
 import usePagination from "@/hooks/usePagination";
 import useSearch from "../User/hooks/useSearch";
 import useAddORUpdate from "./hooks/useAddORUpdate";
