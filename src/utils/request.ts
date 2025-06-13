@@ -32,6 +32,8 @@ request.interceptors.response.use(
                 message: error.message,
             });
         switch (status) {
+            case 400:
+                msg = "请求语法错误";
             case 401:
                 msg = "token过期";
                 break;

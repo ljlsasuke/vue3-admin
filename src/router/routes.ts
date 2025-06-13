@@ -103,7 +103,7 @@ export const constantRoutes: RouteRecordRaw[] = [
     {
         path: "/",
         name: "layout",
-        redirect: "/home",
+        redirect: "/login",
         component: layout,
         meta: {
             hidden: false,
